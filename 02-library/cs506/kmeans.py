@@ -1,5 +1,5 @@
 from collections import defaultdict
-from math import inf
+from math import dist, inf
 from .sim import euclidean_dist
 import random
 import csv
@@ -25,8 +25,8 @@ def update_centers(dataset, assignments):
     Return `k` centers in a list
     """
     Center = []
-    numClusters = max(assignments) + 1
-    for index in range(numClusters):
+    k = max(assignments) + 1
+    for index in range(k):
         cluster = []
         for ind in range(len(dataset)):
             if assignments[ind] == index:
@@ -56,7 +56,7 @@ def distance(a, b):
     Returns the Euclidean distance between a and b
     """
     dist = euclidean_dist(a,b)
-    raise dist
+    return dist
 
 def distance_squared(a, b):
     return (distance(a,b)**2)
@@ -77,7 +77,12 @@ def generate_k(dataset, k):
     return output
 
 def cost_function(clustering):
-    raise NotImplementedError()
+    sum = 0
+    average = point_avg(clustering)
+    for i in range(len(clustering)):
+        sum += euclidean_dist(clustering[i], average)
+    
+    return sum
 
 
 def generate_k_pp(dataset, k):
